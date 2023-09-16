@@ -2,7 +2,12 @@ package sharedmemory
 
 import "unsafe"
 
+// Reader is the part that actually converts bytes to the [Sensor], [Reading], and [Header] structs.
+// It uses the pointer supplied by GetPointer as a start point to convert the bytes into the
+// aforementioned structs.
 type Reader struct {
+	// GetPointer returns a pointer which is the start of the memory/byte array that contains
+	// HWiNFO's sensor data. If the function returns an error, it will be passed along.
 	GetPointer func() (uintptr, error)
 }
 
