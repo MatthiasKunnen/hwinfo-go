@@ -140,7 +140,7 @@ func (reader *MemoryReader) GetReadings(info *HwinfoHeader) ([]*HwinfoReading, e
 
 // Copy copies the shared memory in order to perform processing after the lock has been released.
 // After
-func (reader *MemoryReader) Copy(info *HwinfoHeader) CopyReader {
+func (reader *MemoryReader) Copy(info *HwinfoHeader) BytesReader {
 	offset := reader.mmfPtr
 	size := info.ReadingSectionOffset + info.ReadingAmount*info.ReadingSize
 	byteSlice := make([]byte, size)
@@ -153,7 +153,7 @@ func (reader *MemoryReader) Copy(info *HwinfoHeader) CopyReader {
 	//	byteSlice[i] = *(*byte)(unsafe.Pointer(offset + uintptr(i)))
 	//}
 
-	return CopyReader{
+	return BytesReader{
 		Bytes: byteSlice,
 	}
 }
