@@ -81,7 +81,7 @@ func (reader *MemoryReader) Close() error {
 	return errors.Join(
 		reader.ReleaseLock(),
 		reader.closeMapView(),
-		reader.closeHandle(),
+		reader.closeMappedFileHandle(),
 	)
 }
 
@@ -105,7 +105,7 @@ func (reader *MemoryReader) Open() error {
 		0,
 	)
 	if err != nil {
-		defer reader.closeHandle()
+		defer reader.closeMappedFileHandle()
 		return err
 	}
 	reader.mmfPtr = mmfPtr
@@ -174,7 +174,7 @@ func (reader *MemoryReader) ReleaseLock() error {
 	return nil
 }
 
-func (reader *MemoryReader) closeHandle() error {
+func (reader *MemoryReader) closeMappedFileHandle() error {
 	if reader.mmfHandle != 0 {
 		if err := windows.CloseHandle(reader.mmfHandle); err != nil {
 			return err
