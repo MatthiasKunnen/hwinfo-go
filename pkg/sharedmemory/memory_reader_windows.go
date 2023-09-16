@@ -78,18 +78,11 @@ func NewMemoryReader() *MemoryReader {
 // Close deallocates the resources used by the MemoryReader.
 // Call Open before performing any further operations.
 func (reader *MemoryReader) Close() error {
-	err := reader.ReleaseLock()
-	if err != nil {
-		return err
-	}
-	if err := reader.closeMapView(); err != nil {
-		return err
-	}
-	if err := reader.closeHandle(); err != nil {
-		return err
-	}
-
-	return nil
+	return errors.Join(
+		reader.ReleaseLock(),
+		reader.closeMapView(),
+		reader.closeHandle(),
+	)
 }
 
 // Open readies the MemoryReader for reading the shared memory.
