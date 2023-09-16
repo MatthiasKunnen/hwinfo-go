@@ -61,7 +61,7 @@ func main() {
 		},
 	})
 	if err != nil {
-		fmt.Printf("Error getting copied readings %v\n", err)
+		fmt.Printf("Error getting readings by ID %v\n", err)
 		os.Exit(1)
 	}
 
