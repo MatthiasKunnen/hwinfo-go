@@ -75,6 +75,8 @@ func NewMemoryReader() *MemoryReader {
 	return memoryReader
 }
 
+// Close deallocates the resources used by the MemoryReader.
+// Call Open before performing any further operations.
 func (reader *MemoryReader) Close() error {
 	if err := reader.closeMapView(); err != nil {
 		return err
@@ -86,6 +88,8 @@ func (reader *MemoryReader) Close() error {
 	return nil
 }
 
+// Open readies the MemoryReader for reading the shared memory.
+// Use Close when there will be no more reads.
 func (reader *MemoryReader) Open() error {
 	mmf, err := OpenFileMapping(windows.FILE_MAP_READ, 0, hwinfoSensorsMapFilename)
 
@@ -95,6 +99,7 @@ func (reader *MemoryReader) Open() error {
 
 	reader.mmfHandle = mmf
 
+	// https://learn.microsoft.com/en-us/windows/win32/api/memoryapi/nf-memoryapi-mapviewoffile
 	mmfPtr, err := windows.MapViewOfFile(
 		mmf,
 		windows.FILE_MAP_READ,
