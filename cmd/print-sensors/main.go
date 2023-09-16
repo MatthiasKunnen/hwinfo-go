@@ -7,22 +7,22 @@ import (
 )
 
 func main() {
-	var reader = sharedmemory.NewMemoryReader()
+	var memoryReader = sharedmemory.NewMemoryReader()
 
-	err := reader.Open()
+	err := memoryReader.Open()
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
 
-	err = reader.Lock()
-	defer reader.ReleaseLock()
+	err = memoryReader.Lock()
+	defer memoryReader.ReleaseLock()
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
 
-	hwInfo, err := reader.Reader.GetHeader()
+	hwInfo, err := memoryReader.Reader.GetHeader()
 	if err != nil {
 		fmt.Printf("Failed to get header: %s\n", err)
 		os.Exit(1)
@@ -33,7 +33,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	readings, err := reader.Reader.GetReadings(hwInfo)
+	readings, err := memoryReader.Reader.GetReadings(hwInfo)
 	if err != nil {
 		fmt.Printf("Error getting readings %v\n", err)
 		os.Exit(1)
@@ -43,7 +43,7 @@ func main() {
 		fmt.Printf("%s\t(%d/%d)\t%f\t%s\n", reading.GetUserLabel(), reading.SensorIndex, reading.Id, reading.GetValue(), reading.GetUnit())
 	}
 
-	copyReader := reader.Copy(hwInfo)
+	copyReader := memoryReader.Copy(hwInfo)
 	copiedReadings, err := copyReader.Reader.GetReadings(hwInfo)
 	if err != nil {
 		fmt.Printf("Error getting copied readings %v\n", err)
@@ -54,7 +54,7 @@ func main() {
 		fmt.Printf("%s\t(%d/%d)\t%f\t%s\n", reading.GetUserLabel(), reading.SensorIndex, reading.Id, reading.GetValue(), reading.GetUnit())
 	}
 
-	readingsById, err := reader.Reader.GetReadingsById(hwInfo, []sharedmemory.ReadingIdSensorCombo{
+	readingsById, err := memoryReader.Reader.GetReadingsById(hwInfo, []sharedmemory.ReadingIdSensorCombo{
 		{
 			Id:          134217730,
 			SensorIndex: 24,
