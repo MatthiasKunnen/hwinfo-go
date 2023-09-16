@@ -1,0 +1,16 @@
+# Ignore everything
+*
+
+# But descend into directories
+!*/
+
+# Go
+!/cmd/**/*.go
+!/pkg/**/*.go
+!go.mod
+!go.sum
+
+# General files
+!/.gitignore
+!LICENSE
+!README.md
