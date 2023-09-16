@@ -2,11 +2,13 @@ package sharedmemory
 
 import (
 	"errors"
+	"fmt"
 	"golang.org/x/sys/windows"
 	"unsafe"
 )
 
 const (
+	hwinfoMutexName            = "Global\\HWiNFO_SM2_MUTEX"
 	hwinfoSensorsMapFilename   = "Global\\HWiNFO_SENS_SM2"
 	hwinfoSensorStringLength   = 128
 	hwinfoUnitStringLength     = 16
@@ -91,7 +93,7 @@ func (reader *MemoryReader) Open() error {
 	mmf, err := OpenFileMapping(windows.FILE_MAP_READ, 0, hwinfoSensorsMapFilename)
 
 	if err != nil {
-		return err
+		return fmt.Errorf("error opening file mapping: %w", err)
 	}
 
 	reader.mmfHandle = mmf
@@ -106,7 +108,7 @@ func (reader *MemoryReader) Open() error {
 	)
 	if err != nil {
 		defer reader.closeMappedFileHandle()
-		return err
+		return fmt.Errorf("error mapping view of file: %w", err)
 	}
 	reader.mmfPtr = mmfPtr
 
@@ -136,15 +138,15 @@ func (reader *MemoryReader) Copy(info *HwinfoHeader) *BytesReader {
 // Locks should be held until data is processed or copied.
 // Release it using ReleaseLock.
 func (reader *MemoryReader) Lock() error {
-	mutex, err := openMutex("Global\\HWiNFO_SM2_MUTEX")
+	mutex, err := openMutex(hwinfoMutexName)
 	if err != nil {
-		return err
+		return fmt.Errorf("error opening HWiNFO mutex (%s): %w", hwinfoMutexName, err)
 	}
 	reader.mutex = mutex
 
 	_, err = windows.WaitForSingleObject(mutex, 200)
 	if err != nil {
-		return err
+		return fmt.Errorf("error waiting for HWiNFO mutex (%s): %w", hwinfoMutexName, err)
 	}
 
 	return nil
@@ -168,7 +170,7 @@ func (reader *MemoryReader) ReleaseLock() error {
 	err := windows.ReleaseMutex(reader.mutex)
 	reader.mutex = 0
 	if err != nil {
-		return err
+		return fmt.Errorf("error releasing HWiNFO lock: %w", err)
 	}
 
 	return nil
@@ -177,7 +179,7 @@ func (reader *MemoryReader) ReleaseLock() error {
 func (reader *MemoryReader) closeMappedFileHandle() error {
 	if reader.mmfHandle != 0 {
 		if err := windows.CloseHandle(reader.mmfHandle); err != nil {
-			return err
+			return fmt.Errorf("error closing handle to memory mapped file: %w", err)
 		}
 		reader.mmfHandle = 0
 	}
@@ -188,7 +190,7 @@ func (reader *MemoryReader) closeMappedFileHandle() error {
 func (reader *MemoryReader) closeMapView() error {
 	if reader.mmfPtr != 0 {
 		if err := windows.UnmapViewOfFile(reader.mmfPtr); err != nil {
-			return err
+			return fmt.Errorf("error unmapping MemoryReader view of file: %w", err)
 		}
 		reader.mmfPtr = 0
 	}
