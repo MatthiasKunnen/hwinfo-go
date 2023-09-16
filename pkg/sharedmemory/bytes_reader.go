@@ -6,17 +6,17 @@ import "unsafe"
 // shared memory.
 // A copy can be made using [MemoryReader.Copy].
 type BytesReader struct {
-	Bytes []byte
+	Bytes  []byte
+	Reader Reader
 }
 
-func (reader *BytesReader) GetHeader() *HwinfoHeader {
-	return GetHwinfoHeaderFromStartPointer(uintptr(unsafe.Pointer(&reader.Bytes[0])))
-}
+func NewBytesReader(bytes []byte) *BytesReader {
+	bytesReader := &BytesReader{
+		Bytes: bytes,
+	}
+	bytesReader.Reader.GetPointer = func() (uintptr, error) {
+		return uintptr(unsafe.Pointer(&bytesReader.Bytes[0])), nil
+	}
 
-func (reader *BytesReader) GetSensors(info *HwinfoHeader) []*HwinfoSensor {
-	return GetSensorsFromStartPointer(info, uintptr(unsafe.Pointer(&reader.Bytes[0])))
-}
-
-func (reader *BytesReader) GetReadings(info *HwinfoHeader) []*HwinfoReading {
-	return GetReadingsFromStartPointer(info, uintptr(unsafe.Pointer(&reader.Bytes[0])))
+	return bytesReader
 }

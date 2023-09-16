@@ -14,6 +14,7 @@ const (
 )
 
 // MemoryReader allows for reading the shared memory provided by HWiNFO.
+// Create an instance using NewMemoryReader.
 // Use the Open function to make MemoryReader ready to start reading.
 //
 // # Locking
@@ -35,8 +36,8 @@ const (
 //
 //  1. Open
 //  2. Lock
-//  3. GetHeader
-//  4. GetSensors / GetReadings
+//  3. [Reader.GetHeader]
+//  4. [Reader.GetSensors] / [Reader.GetReadings]
 //  5. Process the data quickly, this will block HWiNFO
 //  6. ReleaseLock
 //
@@ -46,7 +47,7 @@ const (
 //
 //  1. Open
 //  2. Lock
-//  3. GetHeader
+//  3. [Reader.GetHeader]
 //  4. Copy
 //  5. ReleaseLock
 //  6. Process the data, this will not block HWiNFO
@@ -55,6 +56,23 @@ type MemoryReader struct {
 	mutex                  windows.Handle
 	mmfHandle              windows.Handle
 	mmfPtr                 uintptr
+	Reader                 Reader
+}
+
+func NewMemoryReader() *MemoryReader {
+	memoryReader := &MemoryReader{}
+	memoryReader.Reader.GetPointer = func() (uintptr, error) {
+		if memoryReader.mmfPtr == 0 {
+			return 0, errors.New("shared memory not open, use Open first")
+		}
+
+		if err := memoryReader.enforceLock(); err != nil {
+			return 0, err
+		}
+
+		return memoryReader.mmfPtr, nil
+	}
+	return memoryReader
 }
 
 func (reader *MemoryReader) Close() error {
@@ -93,51 +111,6 @@ func (reader *MemoryReader) Open() error {
 	return nil
 }
 
-// GetHeader returns the header of the shared memory. Make sure to lock using Lock().
-func (reader *MemoryReader) GetHeader() (*HwinfoHeader, error) {
-	if reader.mmfPtr == 0 {
-		return nil, errors.New("shared memory not open, use Open first")
-	}
-
-	if err := reader.enforceLock(); err != nil {
-		return nil, err
-	}
-
-	header := GetHwinfoHeaderFromStartPointer(reader.mmfPtr)
-
-	return header, nil
-}
-
-// GetSensors returns the sensors that are reported by HWiNFO.
-// Make sure that the given HwinfoHeader is current, meaning that the lock was held when calling
-// GetHeader and stays held while calling this function and processing its results.
-func (reader *MemoryReader) GetSensors(info *HwinfoHeader) ([]*HwinfoSensor, error) {
-	if reader.mmfPtr == 0 {
-		return nil, errors.New("shared memory not open, use Open first")
-	}
-
-	if err := reader.enforceLock(); err != nil {
-		return nil, err
-	}
-
-	return GetSensorsFromStartPointer(info, reader.mmfPtr), nil
-}
-
-// GetReadings returns all HWiNFO readings.
-// Make sure that the given HwInfoHeader is current, meaning that the lock was held when calling
-// [MemoryReader.GetHeader] and stays held while calling this function and processing its results.
-func (reader *MemoryReader) GetReadings(info *HwinfoHeader) ([]*HwinfoReading, error) {
-	if reader.mmfPtr == 0 {
-		return nil, errors.New("shared memory not open, use Open first")
-	}
-
-	if err := reader.enforceLock(); err != nil {
-		return nil, err
-	}
-
-	return GetReadingsFromStartPointer(info, reader.mmfPtr), nil
-}
-
 // Copy copies the shared memory in order to perform processing after the lock has been released.
 // After
 func (reader *MemoryReader) Copy(info *HwinfoHeader) *BytesReader {
@@ -153,19 +126,7 @@ func (reader *MemoryReader) Copy(info *HwinfoHeader) *BytesReader {
 	//	byteSlice[i] = *(*byte)(unsafe.Pointer(offset + uintptr(i)))
 	//}
 
-	return &BytesReader{
-		Bytes: byteSlice,
-	}
-}
-
-type ReadingIdSensorCombo struct {
-	Id          uint32
-	SensorIndex uint32
-}
-
-// GetReadingsById returns the readings that match the given sensor index/id combinations.
-func (reader *MemoryReader) GetReadingsById(info *HwinfoHeader, readingIds []ReadingIdSensorCombo) []*HwinfoReading {
-	return GetReadingsById(info, reader.mmfPtr, readingIds)
+	return NewBytesReader(byteSlice)
 }
 
 // Lock acquires the HWiNFO mutex.
