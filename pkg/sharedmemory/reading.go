@@ -58,26 +58,32 @@ type HwinfoReading struct {
 	UnitUtf8 [hwinfoUnitStringLength]byte
 }
 
+// GetUserLabel returns the user's label for this reading as a UTF-8 string.
 func (reading *HwinfoReading) GetUserLabel() string {
 	return util.NulTerminatedUtf8ByteArrayToString(reading.UserLabelUtf8[:])
 }
 
+// GetUnit returns the unit as a UTF-8 string.
 func (reading *HwinfoReading) GetUnit() string {
 	return util.NulTerminatedUtf8ByteArrayToString(reading.UnitUtf8[:])
 }
 
+// GetValue converts and returns the value of the reading. E.g. 35.0000
 func (reading *HwinfoReading) GetValue() float64 {
 	return math.Float64frombits(binary.LittleEndian.Uint64(reading.Value[:]))
 }
 
+// GetValueMin converts and returns the minimum value of the reading.
 func (reading *HwinfoReading) GetValueMin() float64 {
 	return math.Float64frombits(binary.LittleEndian.Uint64(reading.ValueMin[:]))
 }
 
+// GetValueMax converts and returns the maximum value of the reading.
 func (reading *HwinfoReading) GetValueMax() float64 {
 	return math.Float64frombits(binary.LittleEndian.Uint64(reading.ValueMax[:]))
 }
 
+// GetValueAvg converts and returns the average value of the reading since HWiNFO is running.
 func (reading *HwinfoReading) GetValueAvg() float64 {
 	return math.Float64frombits(binary.LittleEndian.Uint64(reading.ValueAvg[:]))
 }

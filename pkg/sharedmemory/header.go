@@ -49,18 +49,30 @@ type HwinfoHeader struct {
 	PollingPeriodInMs uint32
 }
 
+// IsActive returns true when HWiNFO is currently updating the shared memory.
+// When HWiNFO shared memory is not active, this usually means that the shared memory time limit
+// has expired.
 func (info HwinfoHeader) IsActive() bool {
 	return info.Status == [4]byte{0x48, 0x57, 0x69, 0x53} // HWiS in ASCII
 }
 
+// GetStatus returns the status of the shared memory.
+// "HWiS" when HWiNFO it is Active,
+// "DAED" (sic.) when it is not.
+// When HWiNFO shared memory is not active, this usually means that the shared memory time limit
+// has expired.
 func (info HwinfoHeader) GetStatus() string {
 	return util.NulTerminatedUtf8ByteArrayToString(info.Status[:])
 }
 
+// GetLastUpdate returns the time since HWiNFO last updated the shared memory in seconds since
+// Unix Epoch.
 func (info HwinfoHeader) GetLastUpdate() int64 {
 	return int64(binary.LittleEndian.Uint64(info.LastUpdate[:]))
 }
 
+// GetLastUpdateTime returns a Time object representing the time since HWiNFO updated the shared
+// memory.
 func (info HwinfoHeader) GetLastUpdateTime() time.Time {
 	return time.Unix(info.GetLastUpdate(), 0)
 }
