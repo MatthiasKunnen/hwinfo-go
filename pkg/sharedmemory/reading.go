@@ -2,6 +2,7 @@ package sharedmemory
 
 import (
 	"encoding/binary"
+	"github.com/MatthiasKunnen/hwinfo-go/pkg/util"
 	"math"
 )
 
@@ -58,11 +59,11 @@ type HwinfoReading struct {
 }
 
 func (reading *HwinfoReading) GetUserLabel() string {
-	return string(reading.UserLabelUtf8[:])
+	return util.NulTerminatedUtf8ByteArrayToString(reading.UserLabelUtf8[:])
 }
 
 func (reading *HwinfoReading) GetUnit() string {
-	return string(reading.UnitUtf8[:])
+	return util.NulTerminatedUtf8ByteArrayToString(reading.UnitUtf8[:])
 }
 
 func (reading *HwinfoReading) GetValue() float64 {

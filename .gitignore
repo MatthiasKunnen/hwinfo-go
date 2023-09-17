@@ -15,3 +15,6 @@
 !/.gitignore
 !LICENSE
 !README.md
+
+# Test
+!test/**/*.go

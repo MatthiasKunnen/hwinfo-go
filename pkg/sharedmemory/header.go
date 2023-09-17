@@ -2,6 +2,7 @@ package sharedmemory
 
 import (
 	"encoding/binary"
+	"github.com/MatthiasKunnen/hwinfo-go/pkg/util"
 	"time"
 )
 
@@ -53,7 +54,7 @@ func (info HwinfoHeader) IsActive() bool {
 }
 
 func (info HwinfoHeader) GetStatus() string {
-	return string(info.Status[:])
+	return util.NulTerminatedUtf8ByteArrayToString(info.Status[:])
 }
 
 func (info HwinfoHeader) GetLastUpdate() int64 {
