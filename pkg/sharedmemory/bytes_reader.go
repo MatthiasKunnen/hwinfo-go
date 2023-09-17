@@ -5,6 +5,8 @@ import "unsafe"
 // BytesReader allows for extracting the header, sensors, and readings from a copy of HWiNFO's
 // shared memory.
 // A copy can be made using [MemoryReader.Copy].
+//
+// BytesReader has an initializer function, [NewBytesReader].
 type BytesReader struct {
 	Bytes []byte
 	Data  Reader
