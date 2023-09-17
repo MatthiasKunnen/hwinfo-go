@@ -11,15 +11,15 @@ type HwinfoSensor struct {
 	SensorInstance uint32
 
 	// Original name of sensor in English. ANSI string.
-	SensorNameOriginalAnsi [hwinfoSensorStringLength]byte
+	SensorNameOriginalAnsi HwinfoSensorStringAscii
 
 	// Display name of sensor. Might be translated or renamed by user. ANSI string.
-	SensorNameAnsi [hwinfoSensorStringLength]byte
+	SensorNameAnsi HwinfoSensorStringAscii
 
 	// Display name of the sensor. Might be renamed by the user.
 	// Use GetSensorName to get a string value.
 	// UTF-8 string.
-	SensorNameUtf8 [hwinfoSensorStringLength]byte
+	SensorNameUtf8 HwinfoSensorStringUtf8
 }
 
 // GetSensorName returns the sensor's name as string. E.g.
