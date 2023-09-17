@@ -8,7 +8,7 @@ import (
 
 // Do not use any other type than uint32, int32, and [?]byte to avoid memory alignment issues
 
-// The HwinfoHeader contains information regarding the rest of the available shared memory.
+// HwinfoHeader contains information regarding the rest of the available shared memory.
 type HwinfoHeader struct {
 	// Reports whether HWiNFO is active.
 	// "HWiS" when HWiNFO it is Active, "DAED" (sic.) when it is not.
@@ -25,7 +25,7 @@ type HwinfoHeader struct {
 
 	// The unix time (seconds since 1970-01-01) when the last update to the data occurred.
 	// Get int using GetLastUpdate.
-	LastUpdate [8]byte // Can't be int64 due to different memory layout
+	LastUpdate [8]byte
 
 	// Offset of the Sensor section from beginning of HwinfoHeader.
 	SensorSectionOffset uint32

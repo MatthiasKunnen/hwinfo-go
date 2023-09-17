@@ -40,16 +40,16 @@ type HwinfoReading struct {
 	UnitAnsi [hwinfoUnitStringLength]byte
 
 	// The value of the reading. Get the actual value, instead of the byte array, using GetValue.
-	Value [8]byte // Can't be float64 due to different memory layout
+	Value [8]byte
 
 	// The minimum value of the reading. Get the actual value, instead of the byte array, using GetValueMin.
-	ValueMin [8]byte // Can't be float64 due to different memory layout
+	ValueMin [8]byte
 
 	// The maximum value of the reading. Get the actual value, instead of the byte array, using GetValueMax.
-	ValueMax [8]byte // Can't be float64 due to different memory layout
+	ValueMax [8]byte
 
 	// The average value of the reading. Get the actual value, instead of the byte array, using GetValueAvg.
-	ValueAvg [8]byte // Can't be float64 due to different memory layout
+	ValueAvg [8]byte
 
 	// Displayed label which might have been renamed by the user (UTF-8). Get the label name using GetUserLabel.
 	UserLabelUtf8 [hwinfoSensorStringLength]byte

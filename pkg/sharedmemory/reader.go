@@ -2,7 +2,8 @@ package sharedmemory
 
 import "unsafe"
 
-// Reader is the part that actually converts bytes to the [Sensor], [Reading], and [Header] structs.
+// Reader is the part that actually converts bytes to the [HwinfoSensor], [HwinfoReading], and
+// [HwinfoHeader] structs.
 // It uses the pointer supplied by GetPointer as a start point to convert the bytes into the
 // aforementioned structs.
 type Reader struct {
@@ -22,8 +23,9 @@ func (reader *Reader) GetHeader() (*HwinfoHeader, error) {
 }
 
 // GetSensors returns the sensors that are reported by HWiNFO.
-// Make sure that the given HwinfoHeader is current, meaning that the lock was held when calling
-// GetHeader and stays held while calling this function and processing its results.
+// Make sure that the given [HwinfoHeader] is current, meaning that the lock was held
+// when calling [Reader.GetHeader] and stays held while calling this function and processing
+// its results.
 func (reader *Reader) GetSensors(info *HwinfoHeader) ([]*HwinfoSensor, error) {
 	pointer, err := reader.GetPointer()
 	if err != nil {

@@ -17,7 +17,7 @@ const (
 
 // MemoryReader allows for reading the shared memory provided by HWiNFO.
 // Create an instance using NewMemoryReader.
-// Use the Open function to make MemoryReader ready to start reading.
+// Use the [MemoryReader.Open] function to make MemoryReader ready to start reading.
 //
 // # Locking
 //
@@ -27,8 +27,8 @@ const (
 // Therefore, locks should be released as soon as possible.
 //
 // By default, the read functions will enforce locking.
-// If necessary, it is possible to disable this enforcement by setting DisableLockEnforcement to
-// `false`.
+// If necessary, it is possible to disable this enforcement by setting
+// [MemoryReader.DisableLockEnforcement] to `false`.
 // Do note that this causes the risk of receiving garbage data when HWiNFO changes the shared memory
 // layout.
 //
@@ -36,22 +36,22 @@ const (
 //
 // If the data can be processed quickly, use the following:
 //
-//  1. Open
-//  2. Lock
+//  1. [MemoryReader.Open]
+//  2. [MemoryReader.Lock]
 //  3. [Reader.GetHeader]
 //  4. [Reader.GetSensors] / [Reader.GetReadings]
 //  5. Process the data quickly, this will block HWiNFO
-//  6. ReleaseLock
+//  6. [MemoryReader.ReleaseLock]
 //
 // # Slow processing
 //
 // If the data cannot be processed quickly, use the following:
 //
-//  1. Open
-//  2. Lock
+//  1. [MemoryReader.Open]
+//  2. [MemoryReader.Lock]
 //  3. [Reader.GetHeader]
-//  4. Copy
-//  5. ReleaseLock
+//  4. [MemoryReader.Copy]
+//  5. [MemoryReader.ReleaseLock]
 //  6. Process the data, this will not block HWiNFO
 type MemoryReader struct {
 	DisableLockEnforcement bool
@@ -78,7 +78,7 @@ func NewMemoryReader() *MemoryReader {
 }
 
 // Close deallocates the resources used by the MemoryReader.
-// Call Open before performing any further operations.
+// Call [MemoryReader.Open] before performing any further operations.
 func (reader *MemoryReader) Close() error {
 	return errors.Join(
 		reader.ReleaseLock(),
@@ -88,7 +88,7 @@ func (reader *MemoryReader) Close() error {
 }
 
 // Open readies the MemoryReader for reading the shared memory.
-// Use Close when there will be no more reads.
+// Use [MemoryReader.Close] when there will be no more reads.
 func (reader *MemoryReader) Open() error {
 	mmf, err := openFileMapping(windows.FILE_MAP_READ, 0, hwinfoSensorsMapFilename)
 
@@ -116,7 +116,6 @@ func (reader *MemoryReader) Open() error {
 }
 
 // Copy copies the shared memory in order to perform processing after the lock has been released.
-// After
 func (reader *MemoryReader) Copy(info *HwinfoHeader) *BytesReader {
 	offset := reader.mmfPtr
 	size := info.ReadingSectionOffset + info.ReadingAmount*info.ReadingSize
@@ -136,7 +135,7 @@ func (reader *MemoryReader) Copy(info *HwinfoHeader) *BytesReader {
 // Lock acquires the HWiNFO mutex.
 // While holding the mutex, HWiNFO will pause so keep this lock as short as possible.
 // Locks should be held until data is processed or copied.
-// Release it using ReleaseLock.
+// Release it using [MemoryReader.ReleaseLock].
 func (reader *MemoryReader) Lock() error {
 	mutex, err := openMutex(hwinfoMutexName)
 	if err != nil {
