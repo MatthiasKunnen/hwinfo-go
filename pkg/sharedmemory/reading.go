@@ -30,14 +30,14 @@ type HwinfoReading struct {
 	// A unique ID of the reading within a particular sensor.
 	Id uint32
 
-	// Original Label in English language (ANSI).
-	OriginalLabelAnsi HwinfoSensorStringAscii
+	// Original Label in English language.
+	OriginalLabelAscii HwinfoSensorStringAscii
 
-	// Displayed label which might have been renamed by the user (ANSI). Use UserLabelUtf8 instead.
-	UserLabelAnsi HwinfoSensorStringAscii
+	// Displayed label which might have been renamed by the user. Use UserLabelUtf8 instead.
+	UserLabelAscii HwinfoSensorStringAscii
 
-	// The unit of the reading. E.g. °C, RPM (ANSI). Use UnitUtf8 instead.
-	UnitAnsi HwinfoUnitStringAscii
+	// The unit of the reading. E.g. °C, RPM. Use UnitUtf8 instead.
+	UnitAscii HwinfoUnitStringAscii
 
 	// The value of the reading. Get the actual value, instead of the byte array, using GetValue.
 	Value [8]byte

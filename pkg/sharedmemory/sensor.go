@@ -10,11 +10,11 @@ type HwinfoSensor struct {
 	// The instance of the sensor (together with SensorId forms a unique ID)
 	SensorInstance uint32
 
-	// Original name of sensor in English. ANSI string.
-	SensorNameOriginalAnsi HwinfoSensorStringAscii
+	// Original name of sensor in English.
+	SensorNameOriginalAscii HwinfoSensorStringAscii
 
-	// Display name of sensor. Might be translated or renamed by user. ANSI string.
-	SensorNameAnsi HwinfoSensorStringAscii
+	// Display name of sensor. Might be translated or renamed by user.
+	SensorNameAscii HwinfoSensorStringAscii
 
 	// Display name of the sensor. Might be renamed by the user.
 	// Use GetSensorName to get a string value.
