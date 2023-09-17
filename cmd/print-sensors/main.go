@@ -1,6 +1,9 @@
 package main
 
-import "github.com/MatthiasKunnen/hwinfo-go/pkg/sharedmemory"
+import (
+	"github.com/MatthiasKunnen/hwinfo-go/internal/text"
+	"github.com/MatthiasKunnen/hwinfo-go/pkg/sharedmemory"
+)
 import (
 	"fmt"
 	"os"
@@ -39,10 +42,23 @@ func main() {
 		os.Exit(1)
 	}
 
+	printer := text.NewTablePrinter(os.Stdout, make([]text.Column, 3), "    ")
+
+	printer.Append([]string{"Label", "Value", "Unit"})
+
 	for _, reading := range readings {
-		fmt.Printf("%s\t(%d/%d)\t%f\t%s\n", reading.GetUserLabel(), reading.SensorIndex, reading.Id, reading.GetValue(), reading.GetUnit())
+		printer.Append([]string{
+			reading.GetUserLabel(),
+			fmt.Sprintf("%f", reading.GetValue()),
+			reading.GetUnit(),
+		})
 	}
 
+	err = printer.Write()
+	if err != nil {
+		fmt.Printf("Error printing table: %s\n", err)
+		os.Exit(1)
+	}
 	copyReader := memoryReader.Copy(hwInfo)
 	copiedReadings, err := copyReader.Data.GetReadings(hwInfo)
 	if err != nil {
