@@ -58,12 +58,12 @@ type MemoryReader struct {
 	mutex                  windows.Handle
 	mmfHandle              windows.Handle
 	mmfPtr                 uintptr
-	Reader                 Reader
+	Data                   Reader
 }
 
 func NewMemoryReader() *MemoryReader {
 	memoryReader := &MemoryReader{}
-	memoryReader.Reader.GetPointer = func() (uintptr, error) {
+	memoryReader.Data.GetPointer = func() (uintptr, error) {
 		if memoryReader.mmfPtr == 0 {
 			return 0, errors.New("shared memory not open, use Open first")
 		}

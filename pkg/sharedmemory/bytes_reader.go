@@ -6,15 +6,15 @@ import "unsafe"
 // shared memory.
 // A copy can be made using [MemoryReader.Copy].
 type BytesReader struct {
-	Bytes  []byte
-	Reader Reader
+	Bytes []byte
+	Data  Reader
 }
 
 func NewBytesReader(bytes []byte) *BytesReader {
 	bytesReader := &BytesReader{
 		Bytes: bytes,
 	}
-	bytesReader.Reader.GetPointer = func() (uintptr, error) {
+	bytesReader.Data.GetPointer = func() (uintptr, error) {
 		return uintptr(unsafe.Pointer(&bytesReader.Bytes[0])), nil
 	}
 

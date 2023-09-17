@@ -22,7 +22,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	hwInfo, err := memoryReader.Reader.GetHeader()
+	hwInfo, err := memoryReader.Data.GetHeader()
 	if err != nil {
 		fmt.Printf("Failed to get header: %s\n", err)
 		os.Exit(1)
@@ -33,7 +33,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	readings, err := memoryReader.Reader.GetReadings(hwInfo)
+	readings, err := memoryReader.Data.GetReadings(hwInfo)
 	if err != nil {
 		fmt.Printf("Error getting readings %v\n", err)
 		os.Exit(1)
@@ -44,7 +44,7 @@ func main() {
 	}
 
 	copyReader := memoryReader.Copy(hwInfo)
-	copiedReadings, err := copyReader.Reader.GetReadings(hwInfo)
+	copiedReadings, err := copyReader.Data.GetReadings(hwInfo)
 	if err != nil {
 		fmt.Printf("Error getting copied readings %v\n", err)
 		os.Exit(1)
@@ -54,7 +54,7 @@ func main() {
 		fmt.Printf("%s\t(%d/%d)\t%f\t%s\n", reading.GetUserLabel(), reading.SensorIndex, reading.Id, reading.GetValue(), reading.GetUnit())
 	}
 
-	readingsById, err := memoryReader.Reader.GetReadingsById(hwInfo, []sharedmemory.ReadingIdSensorCombo{
+	readingsById, err := memoryReader.Data.GetReadingsById(hwInfo, []sharedmemory.ReadingIdSensorCombo{
 		{
 			Id:          134217730,
 			SensorIndex: 24,
