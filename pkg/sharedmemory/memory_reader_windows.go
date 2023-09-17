@@ -90,7 +90,7 @@ func (reader *MemoryReader) Close() error {
 // Open readies the MemoryReader for reading the shared memory.
 // Use Close when there will be no more reads.
 func (reader *MemoryReader) Open() error {
-	mmf, err := OpenFileMapping(windows.FILE_MAP_READ, 0, hwinfoSensorsMapFilename)
+	mmf, err := openFileMapping(windows.FILE_MAP_READ, 0, hwinfoSensorsMapFilename)
 
 	if err != nil {
 		return fmt.Errorf("error opening file mapping: %w", err)

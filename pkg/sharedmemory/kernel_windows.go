@@ -11,10 +11,10 @@ var (
 	procOpenFileMapping = modkernel32.NewProc("OpenFileMappingW")
 )
 
-// OpenFileMapping implements the OpenFileMappingW Windows function and allows for opening a named file mapping object.
+// openFileMapping implements the OpenFileMappingW Windows function and allows for opening a named file mapping object.
 // This is the basis for working with shared memory.
 // See https://learn.microsoft.com/en-us/windows/win32/api/memoryapi/nf-memoryapi-openfilemappingw.
-func OpenFileMapping(access uint32, inheritHandle uint32, name string) (handle windows.Handle, err error) {
+func openFileMapping(access uint32, inheritHandle uint32, name string) (handle windows.Handle, err error) {
 	namePointer, err := windows.UTF16PtrFromString(name)
 	if err != nil {
 		return 0, err
