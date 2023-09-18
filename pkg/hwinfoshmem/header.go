@@ -2,7 +2,7 @@ package hwinfoshmem
 
 import (
 	"encoding/binary"
-	"github.com/MatthiasKunnen/hwinfo-go/pkg/util"
+	"github.com/MatthiasKunnen/hwinfo-go/pkg/util/bytesutil"
 	"time"
 )
 
@@ -62,7 +62,7 @@ func (info HwinfoHeader) IsActive() bool {
 // When HWiNFO shared memory is not active, this usually means that the shared memory time limit
 // has expired.
 func (info HwinfoHeader) GetStatus() string {
-	return util.Utf8BytesToString(info.Status[:])
+	return bytesutil.Utf8BytesToString(info.Status[:])
 }
 
 // GetLastUpdate returns the time since HWiNFO last updated the shared memory in seconds since

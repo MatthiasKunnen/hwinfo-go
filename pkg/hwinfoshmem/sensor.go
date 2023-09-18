@@ -1,6 +1,6 @@
 package hwinfoshmem
 
-import "github.com/MatthiasKunnen/hwinfo-go/pkg/util"
+import "github.com/MatthiasKunnen/hwinfo-go/pkg/util/bytesutil"
 
 // HwinfoSensor can be seen as a way to group readings.
 type HwinfoSensor struct {
@@ -26,5 +26,5 @@ type HwinfoSensor struct {
 //   - GIGABYTE B650E AORUS MASTER (ITE IT8689E)
 //   - CPU [#0]: AMD Ryzen 9 7950X
 func (sensor *HwinfoSensor) GetSensorName() string {
-	return util.Utf8BytesToString(sensor.SensorNameUtf8[:])
+	return bytesutil.Utf8BytesToString(sensor.SensorNameUtf8[:])
 }

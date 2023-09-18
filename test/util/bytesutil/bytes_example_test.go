@@ -1,9 +1,9 @@
-package util_test
+package bytesutil_test
 
 import (
 	"fmt"
 	"github.com/MatthiasKunnen/hwinfo-go/internal/text"
-	"github.com/MatthiasKunnen/hwinfo-go/pkg/util"
+	"github.com/MatthiasKunnen/hwinfo-go/pkg/util/bytesutil"
 	"os"
 	"unicode/utf8"
 )
@@ -22,7 +22,7 @@ func ExampleUtf8BytesToString() {
 		fmt.Sprintf("%d", utf8.RuneCountInString(normalToString)),
 	})
 
-	nulTerminatedResult := util.Utf8BytesToString(theBytes)
+	nulTerminatedResult := bytesutil.Utf8BytesToString(theBytes)
 	printer.Append([]string{
 		"Utf8BytesToString(byteArray)",
 		fmt.Sprintf("%q", nulTerminatedResult),

@@ -2,7 +2,7 @@ package hwinfoshmem
 
 import (
 	"encoding/binary"
-	"github.com/MatthiasKunnen/hwinfo-go/pkg/util"
+	"github.com/MatthiasKunnen/hwinfo-go/pkg/util/bytesutil"
 	"math"
 )
 
@@ -60,12 +60,12 @@ type HwinfoReading struct {
 
 // GetUserLabel returns the user's label for this reading as a UTF-8 string.
 func (reading *HwinfoReading) GetUserLabel() string {
-	return util.Utf8BytesToString(reading.UserLabelUtf8[:])
+	return bytesutil.Utf8BytesToString(reading.UserLabelUtf8[:])
 }
 
 // GetUnit returns the unit as a UTF-8 string.
 func (reading *HwinfoReading) GetUnit() string {
-	return util.Utf8BytesToString(reading.UnitUtf8[:])
+	return bytesutil.Utf8BytesToString(reading.UnitUtf8[:])
 }
 
 // GetValue converts and returns the value of the reading. E.g. 35.0000
