@@ -60,28 +60,6 @@ func main() {
 		os.Exit(1)
 	}
 	copyReader := memoryReader.Copy(hwInfo)
-	copiedReadings, err := copyReader.Data.GetReadings(hwInfo)
-	if err != nil {
-		fmt.Printf("Error getting copied readings %v\n", err)
-		os.Exit(1)
-	}
 
-	for _, reading := range copiedReadings {
-		fmt.Printf("%s\t(%d/%d)\t%f\t%s\n", reading.GetUserLabel(), reading.SensorIndex, reading.Id, reading.GetValue(), reading.GetUnit())
-	}
-
-	readingsById, err := memoryReader.Data.GetReadingsById(hwInfo, []sharedmemory.ReadingIdSensorCombo{
-		{
-			Id:          134217730,
-			SensorIndex: 24,
-		},
-	})
-	if err != nil {
-		fmt.Printf("Error getting readings by ID %v\n", err)
-		os.Exit(1)
-	}
-
-	for _, reading := range readingsById {
-		fmt.Printf("By ID: %s\t(%d/%d)\t%f\t%s\n", reading.GetUserLabel(), reading.SensorIndex, reading.Id, reading.GetValue(), reading.GetUnit())
-	}
+	os.WriteFile("memcopy.bin", copyReader.Bytes, 0666)
 }
