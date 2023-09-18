@@ -8,7 +8,7 @@ import (
 	"unicode/utf8"
 )
 
-func ExampleNulTerminatedUtf8ByteArrayToString() {
+func ExampleUtf8BytesToString() {
 	theBytes := []byte{0x48, 0x65, 0x6C, 0x6C, 0x6F, 0, 0, 0}
 
 	printer := text.NewTablePrinter(os.Stdout, make([]text.Column, 3), "    ")
@@ -22,9 +22,9 @@ func ExampleNulTerminatedUtf8ByteArrayToString() {
 		fmt.Sprintf("%d", utf8.RuneCountInString(normalToString)),
 	})
 
-	nulTerminatedResult := util.NulTerminatedUtf8ByteArrayToString(theBytes)
+	nulTerminatedResult := util.Utf8BytesToString(theBytes)
 	printer.Append([]string{
-		"NulTerminatedUtf8ByteArrayToString(byteArray)",
+		"Utf8BytesToString(byteArray)",
 		fmt.Sprintf("%q", nulTerminatedResult),
 		fmt.Sprintf("%d", utf8.RuneCountInString(nulTerminatedResult)),
 	})
@@ -40,7 +40,7 @@ func ExampleNulTerminatedUtf8ByteArrayToString() {
 	// byteArray = 48 65 6c 6c 6f 00 00 00
 	//
 	// Comparison of byte to string conversions:
-	// function                                         Result (%q)            Amount of characters
-	// string(byteArray[:])                             "Hello\x00\x00\x00"    8
-	// NulTerminatedUtf8ByteArrayToString(byteArray)    "Hello"                5
+	// function                        Result (%q)            Amount of characters
+	// string(byteArray[:])            "Hello\x00\x00\x00"    8
+	// Utf8BytesToString(byteArray)    "Hello"                5
 }

@@ -26,5 +26,5 @@ type HwinfoSensor struct {
 //   - GIGABYTE B650E AORUS MASTER (ITE IT8689E)
 //   - CPU [#0]: AMD Ryzen 9 7950X
 func (sensor *HwinfoSensor) GetSensorName() string {
-	return util.NulTerminatedUtf8ByteArrayToString(sensor.SensorNameUtf8[:])
+	return util.Utf8BytesToString(sensor.SensorNameUtf8[:])
 }

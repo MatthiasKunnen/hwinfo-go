@@ -62,7 +62,7 @@ func (info HwinfoHeader) IsActive() bool {
 // When HWiNFO shared memory is not active, this usually means that the shared memory time limit
 // has expired.
 func (info HwinfoHeader) GetStatus() string {
-	return util.NulTerminatedUtf8ByteArrayToString(info.Status[:])
+	return util.Utf8BytesToString(info.Status[:])
 }
 
 // GetLastUpdate returns the time since HWiNFO last updated the shared memory in seconds since
