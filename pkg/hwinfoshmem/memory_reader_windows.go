@@ -56,21 +56,23 @@ type MemoryReader struct {
 	mutex                  windows.Handle
 	mmfHandle              windows.Handle
 	mmfPtr                 uintptr
-	Data                   Reader
+	*Reader
 }
 
 func NewMemoryReader() *MemoryReader {
 	memoryReader := &MemoryReader{}
-	memoryReader.Data.GetPointer = func() (uintptr, error) {
-		if memoryReader.mmfPtr == 0 {
-			return 0, errors.New("shared memory not open, use Open first")
-		}
+	memoryReader.Reader = &Reader{
+		GetPointer: func() (uintptr, error) {
+			if memoryReader.mmfPtr == 0 {
+				return 0, errors.New("shared memory not open, use Open first")
+			}
 
-		if err := memoryReader.enforceLock(); err != nil {
-			return 0, err
-		}
+			if err := memoryReader.enforceLock(); err != nil {
+				return 0, err
+			}
 
-		return memoryReader.mmfPtr, nil
+			return memoryReader.mmfPtr, nil
+		},
 	}
 	return memoryReader
 }

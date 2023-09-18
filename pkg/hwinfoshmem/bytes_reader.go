@@ -9,15 +9,17 @@ import "unsafe"
 // BytesReader has an initializer function, [NewBytesReader].
 type BytesReader struct {
 	Bytes []byte
-	Data  Reader
+	*Reader
 }
 
 func NewBytesReader(bytes []byte) *BytesReader {
 	bytesReader := &BytesReader{
 		Bytes: bytes,
 	}
-	bytesReader.Data.GetPointer = func() (uintptr, error) {
-		return uintptr(unsafe.Pointer(&bytesReader.Bytes[0])), nil
+	bytesReader.Reader = &Reader{
+		GetPointer: func() (uintptr, error) {
+			return uintptr(unsafe.Pointer(&bytesReader.Bytes[0])), nil
+		},
 	}
 
 	return bytesReader
