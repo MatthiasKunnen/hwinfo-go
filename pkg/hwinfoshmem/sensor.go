@@ -1,4 +1,4 @@
-package sharedmemory
+package hwinfoshmem
 
 import "github.com/MatthiasKunnen/hwinfo-go/pkg/util"
 

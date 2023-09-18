@@ -1,4 +1,4 @@
-package sharedmemory
+package hwinfoshmem
 
 import (
 	"encoding/binary"

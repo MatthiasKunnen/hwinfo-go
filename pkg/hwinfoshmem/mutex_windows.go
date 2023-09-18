@@ -1,4 +1,4 @@
-package sharedmemory
+package hwinfoshmem
 
 import (
 	"golang.org/x/sys/windows"

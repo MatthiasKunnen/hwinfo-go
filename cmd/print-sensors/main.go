@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/MatthiasKunnen/hwinfo-go/internal/text"
-	"github.com/MatthiasKunnen/hwinfo-go/pkg/sharedmemory"
+	"github.com/MatthiasKunnen/hwinfo-go/pkg/hwinfoshmem"
 )
 import (
 	"fmt"
@@ -10,7 +10,7 @@ import (
 )
 
 func main() {
-	var memoryReader = sharedmemory.NewMemoryReader()
+	var memoryReader = hwinfoshmem.NewMemoryReader()
 
 	err := memoryReader.Open()
 	if err != nil {
