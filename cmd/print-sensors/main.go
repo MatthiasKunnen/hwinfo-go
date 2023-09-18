@@ -48,9 +48,9 @@ func main() {
 
 	for _, reading := range readings {
 		printer.Append([]string{
-			reading.GetUserLabel(),
+			reading.UserLabelUtf8.String(),
 			fmt.Sprintf("%f", reading.GetValue()),
-			reading.GetUnit(),
+			reading.UnitUtf8.String(),
 		})
 	}
 

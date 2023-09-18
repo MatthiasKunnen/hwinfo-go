@@ -2,7 +2,6 @@ package hwinfoshmem
 
 import (
 	"encoding/binary"
-	"github.com/MatthiasKunnen/hwinfo-go/pkg/util/bytesutil"
 	"math"
 )
 
@@ -51,21 +50,11 @@ type HwinfoReading struct {
 	// The average value of the reading. Get the actual value, instead of the byte array, using GetValueAvg.
 	ValueAvg [8]byte
 
-	// Displayed label which might have been renamed by the user (UTF-8). Get the label name using GetUserLabel.
+	// Displayed label which might have been renamed by the user.
 	UserLabelUtf8 HwinfoSensorStringUtf8
 
-	// The unit of the reading. E.g. °C, RPM (UTF-8). Get a string using GetUnit.
+	// The unit of the reading. E.g. °C, RPM.
 	UnitUtf8 HwinfoUnitStringUtf8
-}
-
-// GetUserLabel returns the user's label for this reading as a UTF-8 string.
-func (reading *HwinfoReading) GetUserLabel() string {
-	return bytesutil.Utf8BytesToString(reading.UserLabelUtf8[:])
-}
-
-// GetUnit returns the unit as a UTF-8 string.
-func (reading *HwinfoReading) GetUnit() string {
-	return bytesutil.Utf8BytesToString(reading.UnitUtf8[:])
 }
 
 // GetValue converts and returns the value of the reading. E.g. 35.0000
