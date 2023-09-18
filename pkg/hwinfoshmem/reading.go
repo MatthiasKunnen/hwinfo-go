@@ -32,10 +32,10 @@ type HwinfoReading struct {
 	// Original Label in English language.
 	OriginalLabelAscii HwinfoSensorStringAscii
 
-	// Displayed label which might have been renamed by the user. Use UserLabelUtf8 instead.
+	// Displayed label which might have been renamed by the user. Use UserLabel instead.
 	UserLabelAscii HwinfoSensorStringAscii
 
-	// The unit of the reading. E.g. °C, RPM. Use UnitUtf8 instead.
+	// The unit of the reading. E.g. °C, RPM. Use Unit instead.
 	UnitAscii HwinfoUnitStringAscii
 
 	// The value of the reading. Get the actual value, instead of the byte array, using GetValue.
@@ -51,10 +51,10 @@ type HwinfoReading struct {
 	ValueAvg [8]byte
 
 	// Displayed label which might have been renamed by the user.
-	UserLabelUtf8 HwinfoSensorStringUtf8
+	UserLabel HwinfoSensorStringUtf8
 
 	// The unit of the reading. E.g. °C, RPM.
-	UnitUtf8 HwinfoUnitStringUtf8
+	Unit HwinfoUnitStringUtf8
 }
 
 // GetValue converts and returns the value of the reading. E.g. 35.0000

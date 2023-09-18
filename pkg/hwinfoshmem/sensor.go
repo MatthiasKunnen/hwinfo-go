@@ -18,5 +18,5 @@ type HwinfoSensor struct {
 	// E.g.
 	//   - GIGABYTE B650E AORUS MASTER (ITE IT8689E)
 	//   - CPU [#0]: AMD Ryzen 9 7950X
-	SensorNameUtf8 HwinfoSensorStringUtf8
+	SensorName HwinfoSensorStringUtf8
 }
