@@ -17,4 +17,5 @@
 !README.md
 
 # Test
-!test/**/*.go
+!pkg/**/testdata/**/*.bin
+!pkg/**/testdata/**/*.txt

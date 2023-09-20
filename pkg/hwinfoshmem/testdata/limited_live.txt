@@ -1,0 +1,2 @@
+limited_live.bin contains a copy of HWiNFO's shared memory with only some sensors enabled.
+The status of the copy is live (HWiS).
