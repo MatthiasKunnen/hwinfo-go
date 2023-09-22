@@ -2,8 +2,8 @@ package bytesutil_test
 
 import (
 	"fmt"
-	"github.com/MatthiasKunnen/hwinfo-go/internal/text"
 	"github.com/MatthiasKunnen/hwinfo-go/pkg/util/bytesutil"
+	"github.com/MatthiasKunnen/hwinfo-go/pkg/util/text"
 	"os"
 	"unicode/utf8"
 )

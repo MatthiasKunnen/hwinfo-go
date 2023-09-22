@@ -3,8 +3,8 @@ package hwinfoshmem_test
 import (
 	_ "embed"
 	"fmt"
-	"github.com/MatthiasKunnen/hwinfo-go/internal/text"
 	"github.com/MatthiasKunnen/hwinfo-go/pkg/hwinfoshmem"
+	"github.com/MatthiasKunnen/hwinfo-go/pkg/util/text"
 	"os"
 )
 

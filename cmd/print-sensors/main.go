@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/MatthiasKunnen/hwinfo-go/internal/text"
 	"github.com/MatthiasKunnen/hwinfo-go/pkg/hwinfoshmem"
+	"github.com/MatthiasKunnen/hwinfo-go/pkg/util/text"
 )
 import (
 	"fmt"
