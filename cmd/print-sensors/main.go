@@ -13,13 +13,13 @@ func main() {
 	var memoryReader = hwinfoshmem.NewMemoryReader()
 
 	err := memoryReader.Open()
+	defer memoryReader.Close()
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
 
 	err = memoryReader.Lock()
-	defer memoryReader.ReleaseLock()
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)

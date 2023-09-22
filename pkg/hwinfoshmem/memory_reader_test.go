@@ -9,13 +9,13 @@ func ExampleMemoryReader() {
 	var memoryReader = hwinfoshmem.NewMemoryReader()
 
 	err := memoryReader.Open()
+	defer memoryReader.Close()
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
 	err = memoryReader.Lock()
-	defer memoryReader.ReleaseLock()
 	if err != nil {
 		fmt.Println(err)
 		return
