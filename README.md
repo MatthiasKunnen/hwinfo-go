@@ -6,6 +6,9 @@ Use cases:
 - Execute some code if a sensor value is exceeded
 - Log sensor values
 
+## Documentation
+- Shared memory: <https://pkg.go.dev/github.com/MatthiasKunnen/hwinfo-go/pkg/hwinfoshmem>
+
 ## Examples
 
 ### Print all HWiNFO readings
